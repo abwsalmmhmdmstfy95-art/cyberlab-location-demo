@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>CyberLab Location Demo</title>
+
+<style>
+body {
+  background: #10131c;
+  color: white;
+  font-family: Arial;
+  text-align: center;
+  padding: 30px;
+}
+button {
+  background: #2675ee;
+  color: white;
+  border: 0;
+  padding: 15px 25px;
+  border-radius: 10px;
+  font-size: 17px;
+}
+.box {
+  background: #202638;
+  padding: 20px;
+  border-radius: 12px;
+  margin-top: 25px;
+}
+</style>
+</head>
+
+<body>
+
+<h1>CyberLab</h1>
+<h3>Location Demo</h3>
+
+<p>
+تجربة تحديد الموقع الجغرافي بموافقتك.
+اضغط الزر واسمح للمتصفح بمشاركة موقعك.
+</p>
+
+<button onclick="getLocation()">
+مشاركة موقعي
+</button>
+
+<div class="box" id="result">
+الموقع لم تتم مشاركته بعد.
+</div>
+
+<script>
+function getLocation() {
+  const result = document.getElementById("result");
+
+  if (!navigator.geolocation) {
+    result.innerText = "المتصفح لا يدعم تحديد الموقع";
+    return;
+  }
+
+  result.innerText = "في انتظار موافقتك...";
+
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      result.innerHTML =
+        "خط العرض: " + position.coords.latitude +
+        "<br>خط الطول: " + position.coords.longitude +
+        "<br>دقة الموقع: " + position.coords.accuracy + " متر";
+    },
+    function(error) {
+      result.innerText = "لم تتم مشاركة الموقع.";
+    }
+  );
+}
+</script>
+
+</body>
+</html>
