@@ -73,5 +73,48 @@ function getLocation() {
 }
 </script>
 
+<div id="map" style="height:350px; margin-top:20px; border-radius:12px;"></div>
+
+<link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css">
+
+<script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+
+<script>
+function showMap(lat, lon) {
+  const map = L.map('map').setView([lat, lon], 15);
+
+  L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+    attribution: '© OpenStreetMap'
+  }).addTo(map);
+
+  L.marker([lat, lon])
+    .addTo(map)
+    .bindPopup('موقعك الذي وافقت على مشاركته')
+    .openPopup();
+}
+
+const oldGetLocation = getLocation;
+
+getLocation = function() {
+  navigator.geolocation.getCurrentPosition(
+    function(position) {
+      const lat = position.coords.latitude;
+      const lon = position.coords.longitude;
+
+      document.getElementById('result').innerHTML =
+        'خط العرض: ' + lat +
+        '<br>خط الطول: ' + lon +
+        '<br>دقة الموقع: ' + position.coords.accuracy + ' متر';
+
+      showMap(lat, lon);
+    },
+    function() {
+      document.getElementById('result').innerText =
+        'لم تتم مشاركة الموقع.';
+    }
+  );
+};
+</script>
+
 </body>
 </html>
